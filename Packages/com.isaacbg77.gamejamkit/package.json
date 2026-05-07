@@ -1,0 +1,14 @@
+{
+  "name": "com.isaacbg77.gamejamkit",
+  "version": "0.1.0",
+  "displayName": "Game Jam Kit",
+  "description": "Reusable Unity systems for game jams: scene loading, sound/music, pause, local multiplayer lobby, menu scaffolding, and utilities.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Isaac"
+  },
+  "dependencies": {
+    "com.unity.inputsystem": "1.11.0",
+    "com.unity.ugui": "2.0.0"
+  }
+}

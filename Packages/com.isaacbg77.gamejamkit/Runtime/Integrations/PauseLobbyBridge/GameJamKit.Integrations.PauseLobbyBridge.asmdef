@@ -1,0 +1,19 @@
+{
+    "name": "GameJamKit.Integrations.PauseLobbyBridge",
+    "rootNamespace": "GameJamKit.Integrations",
+    "references": [
+        "GameJamKit.Utilities",
+        "GameJamKit.Pause",
+        "GameJamKit.Lobby",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

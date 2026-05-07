@@ -1,0 +1,19 @@
+{
+    "name": "GameJamKit.UI",
+    "rootNamespace": "GameJamKit.UI",
+    "references": [
+        "GameJamKit.Utilities",
+        "GameJamKit.SceneManagement",
+        "Eflatun.SceneReference",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,17 @@
+{
+    "name": "GameJamKit.Sound",
+    "rootNamespace": "GameJamKit.Sound",
+    "references": [
+        "GameJamKit.Utilities",
+        "GameJamKit.SceneManagement"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,17 @@
+{
+    "name": "GameJamKit.SceneManagement",
+    "rootNamespace": "GameJamKit.SceneManagement",
+    "references": [
+        "GameJamKit.Utilities",
+        "Eflatun.SceneReference"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
