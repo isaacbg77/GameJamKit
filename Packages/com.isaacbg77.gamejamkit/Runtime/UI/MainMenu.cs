@@ -1,4 +1,3 @@
-using Eflatun.SceneReference;
 using GameJamKit.SceneManagement;
 using UnityEngine;
 
@@ -7,8 +6,8 @@ namespace GameJamKit.UI.Menus
     public class MainMenu : MonoBehaviour
     {
         [SerializeField] private SceneLoadData? nextScene;
-        [SerializeField] private SceneReference? instructionsScene;
-        [SerializeField] private SceneReference? creditsScene;
+        [SerializeField] private SceneLoadData? instructionsScene;
+        [SerializeField] private SceneLoadData? creditsScene;
 
         private void Awake()
         {

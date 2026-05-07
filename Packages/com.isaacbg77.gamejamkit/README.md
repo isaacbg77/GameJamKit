@@ -8,8 +8,8 @@ Reusable Unity systems for game jams, extracted from shipped jam projects. Targe
 | --- | --- | --- |
 | Utilities | `GameJamKit.Utilities` | `Singleton<T>` / `PersistentSingleton<T>`, `InterfaceFinder`, scene-scoped find/instantiate extensions, list shuffle |
 | Scene Management | `GameJamKit.SceneManagement` | Async `SceneLoader` with load/unload/music events + `SceneLoadData` ScriptableObject |
-| Sound | `GameJamKit.Sound` | `ISoundService` + `SoundManager`, `MusicManager` with cross-fade, `AudioMixerSlider` |
-| UI | `GameJamKit.UI` | `IInitializableUI`, `GameVersionUI`, prebuilt menu scripts (Main/Credits/Instructions/Win) |
+| Sound | `GameJamKit.Sound` | `ISoundService` + `SoundManager`, `IMusicService` + `MusicManager` with cross-fade, `AudioMixerSlider` |
+| UI | `GameJamKit.UI` | `IInitializableUI`, `GameVersionUI`, prebuilt menu scripts (`MainMenu`, `BackToMainMenuScript`, `InstructionsMenu`, `WinMenu`) |
 | Pause | `GameJamKit.Pause` | `IPauseService` + standalone `PauseService` (Time.timeScale + panel) |
 | Lobby | `GameJamKit.Lobby` | `IPlayerLobbyService` + local-multiplayer lobby driven by Input System `PlayerInputManager` |
 | Pause/Lobby bridge | `GameJamKit.Integrations.PauseLobbyBridge` | Optional: auto-pause on device-lost, auto-resume on device-regained, per-player pause input |

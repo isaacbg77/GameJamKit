@@ -9,9 +9,8 @@ namespace GameJamKit.Pause
         [SerializeField] private InputActionReference? pauseAction;
 
         private GameObject? pausePanelInstance;
-        private bool isPaused;
 
-        public bool IsPaused => isPaused;
+        public bool IsPaused { get; private set; }
 
         public event IPauseService.PauseStateChangedEvent? Paused;
         public event IPauseService.PauseStateChangedEvent? Resumed;
@@ -36,8 +35,8 @@ namespace GameJamKit.Pause
 
         public void Pause()
         {
-            if (isPaused) return;
-            isPaused = true;
+            if (IsPaused) return;
+            IsPaused = true;
 
             if (pausePanelInstance == null && pausePanelPrefab != null)
             {
@@ -51,8 +50,8 @@ namespace GameJamKit.Pause
 
         public void Unpause()
         {
-            if (!isPaused) return;
-            isPaused = false;
+            if (!IsPaused) return;
+            IsPaused = false;
 
             pausePanelInstance?.SetActive(false);
             Time.timeScale = 1f;
@@ -61,7 +60,7 @@ namespace GameJamKit.Pause
 
         public void Toggle()
         {
-            if (isPaused) Unpause();
+            if (IsPaused) Unpause();
             else Pause();
         }
 

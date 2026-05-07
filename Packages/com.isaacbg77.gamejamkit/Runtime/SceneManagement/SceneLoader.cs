@@ -25,7 +25,7 @@ namespace GameJamKit.SceneManagement
             return loadedScene;
         }
 
-        public async Awaitable<Scene?> LoadSceneAsync(SceneReference scene, bool setAsActiveScene = true)
+        private async Awaitable<Scene?> LoadSceneAsync(SceneReference scene, bool setAsActiveScene = true)
         {
             Debug.Log($"{nameof(SceneLoader)}: Loading scene {scene.Name}...");
 

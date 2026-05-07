@@ -1,26 +1,23 @@
+using System;
+using System.Threading;
 using GameJamKit.SceneManagement;
-using GameJamKit.Utilities;
 using UnityEngine;
 
 namespace GameJamKit.Sound
 {
     [RequireComponent(typeof(AudioSource))]
-    public class MusicManager : Singleton<MusicManager>
+    public class MusicManager : MonoBehaviour, IMusicService
     {
         [SerializeField] private float fadeTime = 1f;
 
         private AudioSource? musicSource;
         private float startVolume;
-        private int fadeToken;
+        private CancellationTokenSource? fadeCts;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             musicSource = GetComponent<AudioSource>();
             if (musicSource == null) Debug.LogError($"{nameof(MusicManager)}: {nameof(musicSource)} not found");
-
-            SceneLoader.Instance.SceneMusicRequested += OnSceneMusicRequested;
         }
 
         private void Start()
@@ -28,50 +25,76 @@ namespace GameJamKit.Sound
             if (musicSource != null) startVolume = musicSource.volume;
         }
 
+        private void OnEnable()
+        {
+            if (SceneLoader.Instance != null)
+            {
+                SceneLoader.Instance.SceneMusicRequested += OnSceneMusicRequested;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (SceneLoader.Instance != null)
+            {
+                SceneLoader.Instance.SceneMusicRequested -= OnSceneMusicRequested;
+            }
+        }
+
         private void OnDestroy()
         {
-            fadeToken++;
-
-            if (SceneLoader.Instance != null)
-                SceneLoader.Instance.SceneMusicRequested -= OnSceneMusicRequested;
+            fadeCts?.Cancel();
+            fadeCts?.Dispose();
         }
 
-        private void OnSceneMusicRequested(AudioClip clip)
-        {
-            _ = PlayMusic(clip);
-        }
+        private void OnSceneMusicRequested(AudioClip clip) => _ = PlayMusic(clip);
 
         public async Awaitable PlayMusic(AudioClip clip)
         {
             if (musicSource == null) return;
 
-            var token = ++fadeToken;
+            var ct = StartNewFade();
 
-            if (musicSource.isPlaying)
+            try
             {
-                await FadeVolumeAsync(musicSource, 0f, fadeTime, token);
-                if (token != fadeToken || this == null || musicSource == null) return;
-                musicSource.Stop();
+                if (musicSource.isPlaying)
+                {
+                    await FadeVolumeAsync(musicSource, 0f, fadeTime, ct);
+                    musicSource.Stop();
+                }
+
+                musicSource.clip = clip;
+                musicSource.volume = 0f;
+                musicSource.Play();
+
+                await FadeVolumeAsync(musicSource, startVolume, fadeTime, ct);
             }
-
-            musicSource.clip = clip;
-            musicSource.volume = 0f;
-            musicSource.Play();
-
-            await FadeVolumeAsync(musicSource, startVolume, fadeTime, token);
+            catch (OperationCanceledException) { }
         }
 
         public async Awaitable StopMusic()
         {
             if (musicSource == null) return;
 
-            var token = ++fadeToken;
-            await FadeVolumeAsync(musicSource, 0f, fadeTime, token);
-            if (token != fadeToken || this == null || musicSource == null) return;
-            musicSource.Stop();
+            var fadeCancelToken = StartNewFade();
+
+            try
+            {
+                await FadeVolumeAsync(musicSource, 0f, fadeTime, fadeCancelToken);
+                musicSource.Stop();
+            }
+            catch (OperationCanceledException) { }
         }
 
-        private async Awaitable FadeVolumeAsync(AudioSource source, float targetVolume, float duration, int token)
+        private CancellationToken StartNewFade()
+        {
+            fadeCts?.Cancel();
+            fadeCts?.Dispose();
+            fadeCts = new CancellationTokenSource();
+            return fadeCts.Token;
+        }
+
+        private async Awaitable FadeVolumeAsync(AudioSource source, float targetVolume, float duration, CancellationToken token)
         {
             if (duration <= 0f)
             {
@@ -84,15 +107,12 @@ namespace GameJamKit.Sound
 
             while (elapsed < duration)
             {
-                if (token != fadeToken || this == null || source == null) return;
-                await Awaitable.NextFrameAsync();
-                if (token != fadeToken || this == null || source == null) return;
-
+                await Awaitable.NextFrameAsync(token);
                 elapsed += Time.unscaledDeltaTime;
                 source.volume = Mathf.Lerp(fromVolume, targetVolume, Mathf.Clamp01(elapsed / duration));
             }
 
-            if (source != null) source.volume = targetVolume;
+            source.volume = targetVolume;
         }
     }
 }
